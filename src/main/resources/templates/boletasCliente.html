@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Historial Cliente - MAISON Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root { --dark:#16140f; --cream:#f5f0e8; --cream2:#ede6d8; --sand:#c9b89a; --accent:#b5956a; --warm:#8c7b6b; --border:rgba(201,184,154,0.2); }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--cream); font-family: 'Jost', sans-serif; font-weight: 300; color: var(--dark); }
+
+    .navbar-maison { background: var(--dark); padding: 0 32px; height: 64px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 900; border-bottom: 1px solid var(--border); }
+    .navbar-brand-txt { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; color: var(--cream); letter-spacing: 0.12em; }
+    .navbar-brand-txt em { font-style: italic; color: var(--sand); }
+    .navbar-right { display: flex; align-items: center; gap: 10px; }
+    .btn-nav { background: transparent; border: 1px solid var(--border); color: var(--sand); font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase; padding: 6px 14px; border-radius: 2px; text-decoration: none; font-family: 'Jost', sans-serif; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; }
+    .btn-nav:hover { background: rgba(181,149,106,0.15); color: var(--cream); border-color: var(--accent); text-decoration: none; }
+
+    .page-wrap { max-width: 900px; margin: 0 auto; padding: 40px 28px; }
+
+    .cliente-card { background: white; border: 1px solid var(--cream2); border-radius: 4px; padding: 24px 28px; margin-bottom: 24px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .avatar-lg { width: 56px; height: 56px; border-radius: 50%; background: rgba(181,149,106,0.12); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent); flex-shrink: 0; }
+    .cliente-info { flex: 1; }
+    .cliente-nombre { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 300; color: var(--dark); }
+    .cliente-det { font-size: 0.72rem; color: var(--warm); margin-top: 5px; display: flex; flex-wrap: wrap; gap: 4px 16px; }
+    .cliente-det i { color: var(--sand); margin-right: 4px; }
+    .total-gastado { text-align: right; }
+    .total-gastado-label { font-size: 0.58rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--warm); }
+    .total-gastado-val { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; color: var(--accent); }
+
+    .table-card { background: white; border: 1px solid var(--cream2); border-radius: 4px; overflow: hidden; }
+    .table-card-header { padding: 14px 20px; border-bottom: 1px solid var(--cream2); display: flex; align-items: center; justify-content: space-between; }
+    .table-card-title { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--warm); display: flex; align-items: center; gap: 8px; }
+    .table-card-title i { color: var(--accent); }
+
+    .maison-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    .maison-table thead th { padding: 10px 18px; font-size: 0.58rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--warm); border-bottom: 1px solid var(--cream2); font-weight: 400; background: #faf7f2; }
+    .maison-table tbody tr { border-bottom: 1px solid #f2ede4; transition: background 0.15s; }
+    .maison-table tbody tr:last-child { border-bottom: none; }
+    .maison-table tbody tr:hover { background: #faf7f2; }
+    .maison-table td { padding: 13px 18px; vertical-align: middle; }
+    .maison-table tfoot td { padding: 14px 18px; border-top: 1px solid var(--cream2); }
+
+    .num-bol { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--dark); }
+    .fecha-val { font-size: 0.78rem; color: var(--warm); }
+    .total-val { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--dark); }
+    .btn-ver { background: var(--dark); color: var(--cream); border: none; font-family: 'Jost', sans-serif; font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase; padding: 6px 12px; border-radius: 2px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
+    .btn-ver:hover { background: var(--accent); color: var(--cream); text-decoration: none; }
+    .btn-back { background: transparent; border: 1px solid var(--cream2); color: var(--warm); font-family: 'Jost', sans-serif; font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; padding: 8px 16px; border-radius: 2px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; }
+    .btn-back:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+
+    .empty-state { padding: 40px 20px; text-align: center; color: var(--warm); font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar-maison">
+  <div class="navbar-brand-txt">MAI<em>SON</em></div>
+  <div class="navbar-right">
+    <a href="/boletas/listar" class="btn-nav"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+    <a href="/logout" class="btn-nav"><i class="fa-solid fa-right-from-bracket"></i> Salir</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- CLIENTE INFO -->
+  <div class="cliente-card">
+    <div class="avatar-lg"
+         th:text="${#strings.substring(usuario.nomUsua,0,1) + #strings.substring(usuario.apeUsua,0,1)}">US</div>
+    <div class="cliente-info">
+      <div class="cliente-nombre" th:text="${usuario.nomUsua + ' ' + usuario.apeUsua}">Nombre Cliente</div>
+      <div class="cliente-det">
+        <span><i class="fa-solid fa-envelope"></i><span th:text="${usuario.email}"></span></span>
+        <span><i class="fa-solid fa-phone"></i><span th:text="${usuario.telefono}"></span></span>
+        <span><i class="fa-solid fa-id-card"></i> DNI <span th:text="${usuario.dni}"></span></span>
+      </div>
+    </div>
+    <div class="total-gastado">
+      <div class="total-gastado-label">Total Gastado</div>
+      <div class="total-gastado-val">
+        S/ <span th:text="${#numbers.formatDecimal(totalGastado, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLA BOLETAS -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <div class="table-card-title"><i class="fa-solid fa-receipt"></i> Historial de Boletas</div>
+      <span style="font-size:0.65rem; color:var(--warm);"
+            th:text="${#lists.size(lstBoletas)} + ' compra(s)'"></span>
+    </div>
+    <table class="maison-table">
+      <thead>
+        <tr>
+          <th># Boleta</th>
+          <th>Fecha</th>
+          <th class="text-right">Total</th>
+          <th class="text-center">Detalle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:if="${#lists.isEmpty(lstBoletas)}">
+          <td colspan="4"><div class="empty-state">Este cliente no tiene boletas registradas.</div></td>
+        </tr>
+        <tr th:each="b : ${lstBoletas}">
+          <td><span class="num-bol"># <span th:text="${b.numBol}"></span></span></td>
+          <td><span class="fecha-val" th:text="${b.fecha}"></span></td>
+          <td class="text-right">
+            <span class="total-val">S/ <span th:text="${#numbers.formatDecimal(b.total, 1, 'COMMA', 2, 'POINT')}"></span></span>
+          </td>
+          <td class="text-center">
+            <a th:href="@{'/boletas/detalle/' + ${b.numBol}}" class="btn-ver">
+              <i class="fa-solid fa-eye"></i> Ver
+            </a>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2" style="font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--warm);">Total acumulado</td>
+          <td class="text-right" style="font-family:'Cormorant Garamond',serif; font-size:1.3rem; color:var(--accent);">
+            S/ <span th:text="${#numbers.formatDecimal(totalGastado, 1, 'COMMA', 2, 'POINT')}"></span>
+          </td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div style="margin-top:20px;">
+    <a href="/boletas/listar" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver a clientes</a>
+  </div>
+  
+
+</div>
+</body>
+</html>

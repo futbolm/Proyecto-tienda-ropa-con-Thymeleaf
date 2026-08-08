@@ -1,0 +1,423 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tienda - MAISON</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --dark:   #16140f;
+      --cream:  #f5f0e8;
+      --cream2: #ede6d8;
+      --sand:   #c9b89a;
+      --accent: #b5956a;
+      --warm:   #8c7b6b;
+      --error:  #c0392b;
+      --success-color: #2d6a4f;
+      --border: rgba(201,184,154,0.2);
+    }
+    html, body { margin: 0; padding: 0; background: var(--cream); font-family: 'Jost', sans-serif; font-weight: 300; color: var(--dark); }
+
+    /* ── NAVBAR ── */
+    .navbar-maison {
+      background: var(--dark);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      border-bottom: 1px solid var(--border);
+    }
+    .navbar-brand-txt {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: var(--cream);
+      letter-spacing: 0.12em;
+    }
+    .navbar-brand-txt em { font-style: italic; color: var(--sand); }
+    .navbar-right { display: flex; align-items: center; gap: 14px; }
+    .navbar-user { font-size: 0.75rem; color: var(--warm); letter-spacing: 0.05em; }
+    .navbar-user i { margin-right: 5px; color: var(--sand); }
+    .btn-nav { background: transparent; border: 1px solid var(--border); color: var(--sand); font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase; padding: 6px 14px; border-radius: 2px; text-decoration: none; transition: all 0.2s; font-family: 'Jost', sans-serif; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-nav:hover { background: rgba(181,149,106,0.15); color: var(--cream); border-color: var(--accent); text-decoration: none; }
+    .btn-nav-accent { border-color: var(--accent); color: var(--accent); }
+    .btn-nav-accent:hover { background: var(--accent); color: var(--cream); }
+
+    /* Carrito badge */
+    .cart-count { background: var(--accent); color: white; font-size: 0.6rem; width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-left: 4px; font-weight: 500; }
+
+    /* ── PAGE ── */
+    .page-wrap { max-width: 1200px; margin: 0 auto; padding: 36px 28px; }
+
+    /* Hero section */
+    .page-hero { margin-bottom: 36px; padding-bottom: 24px; border-bottom: 1px solid var(--cream2); }
+    .page-hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 300; color: var(--dark); line-height: 1.1; }
+    .page-hero h1 em { font-style: italic; color: var(--accent); }
+    .page-hero p { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--warm); margin-top: 6px; margin-bottom: 0; }
+
+    /* Alerts */
+    .alert-maison { padding: 10px 16px; border-radius: 2px; font-size: 0.78rem; margin-bottom: 20px; border-left: 3px solid; display: flex; align-items: center; gap: 10px; }
+    .alert-success-m { background: rgba(45,106,79,0.07);  border-color: var(--success-color); color: var(--success-color); }
+    .alert-warning-m { background: rgba(181,149,106,0.1); border-color: var(--accent); color: var(--accent); }
+    .alert-danger-m  { background: rgba(192,57,43,0.07);  border-color: var(--error); color: var(--error); }
+
+    /* ── PRODUCT GRID ── */
+    .prod-card {
+      background: white;
+      border-radius: 4px;
+      border: 1px solid var(--cream2);
+      overflow: hidden;
+      transition: box-shadow 0.25s, transform 0.25s;
+      animation: fadeUp 0.5s ease both;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .prod-card:hover { box-shadow: 0 8px 32px rgba(22,20,15,0.1); transform: translateY(-3px); }
+
+    .prod-img-wrap {
+      width: 100%; height: 200px; overflow: hidden; background: var(--cream2);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .prod-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .prod-card:hover .prod-img-wrap img { transform: scale(1.04); }
+    .prod-img-placeholder { color: var(--sand); font-size: 2.5rem; opacity: 0.4; }
+
+    .prod-body { padding: 16px 18px; flex: 1; display: flex; flex-direction: column; }
+    .prod-categoria { font-size: 0.58rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--warm); margin-bottom: 6px; }
+    .prod-nombre { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 400; color: var(--dark); line-height: 1.2; margin-bottom: 4px; }
+    .prod-talla { font-size: 0.68rem; color: var(--warm); margin-bottom: 10px; }
+    .prod-precio { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 300; color: var(--dark); margin-bottom: 10px; }
+    .prod-stock { font-size: 0.68rem; letter-spacing: 0.08em; margin-bottom: 14px; }
+    .stock-ok   { color: var(--success-color); }
+    .stock-low  { color: #c0712a; }
+    .stock-none { color: var(--error); }
+
+    /* Cantidad input */
+    .qty-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .qty-label { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--warm); }
+    .qty-input {
+      width: 64px; background: transparent; border: none;
+      border-bottom: 1px solid #d9cfc4; padding: 4px 0;
+      font-family: 'Jost', sans-serif; font-size: 0.85rem; font-weight: 300;
+      color: var(--dark); outline: none; text-align: center;
+      transition: border-color 0.2s;
+    }
+    .qty-input:focus { border-bottom-color: var(--accent); }
+
+    .btn-agregar {
+      margin-top: auto; width: 100%; background: var(--dark); color: var(--cream);
+      border: none; font-family: 'Jost', sans-serif; font-size: 0.62rem;
+      letter-spacing: 0.35em; text-transform: uppercase; padding: 10px;
+      border-radius: 2px; cursor: pointer; transition: background 0.25s, letter-spacing 0.25s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-agregar:hover { background: var(--accent); letter-spacing: 0.45em; }
+    .btn-sin-stock {
+      width: 100%; background: var(--cream2); color: var(--warm);
+      border: none; font-family: 'Jost', sans-serif; font-size: 0.62rem;
+      letter-spacing: 0.3em; text-transform: uppercase; padding: 10px;
+      border-radius: 2px; cursor: not-allowed; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+
+    /* ── CARRITO ── */
+    .carrito-card {
+      background: white;
+      border-radius: 4px;
+      border: 1px solid var(--cream2);
+      position: sticky;
+      top: 84px;
+      overflow: hidden;
+    }
+    .carrito-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--cream2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .carrito-title { font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--warm); display: flex; align-items: center; gap: 8px; }
+    .carrito-title i { color: var(--accent); }
+
+    .carrito-empty { padding: 40px 20px; text-align: center; color: var(--warm); }
+    .carrito-empty i { font-size: 1.8rem; opacity: 0.25; margin-bottom: 10px; display: block; }
+    .carrito-empty p { font-size: 0.75rem; letter-spacing: 0.08em; opacity: 0.7; }
+
+    .carrito-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+    .carrito-table tbody tr { border-bottom: 1px solid #f2ede4; }
+    .carrito-table tbody tr:last-child { border-bottom: none; }
+    .carrito-table td { padding: 10px 16px; vertical-align: middle; }
+    .carrito-prod-name { font-weight: 400; color: var(--dark); }
+    .carrito-prod-sub { font-size: 0.68rem; color: var(--warm); }
+
+    .carrito-footer { padding: 16px 20px; border-top: 1px solid var(--cream2); }
+    .carrito-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .carrito-total-label { font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--warm); }
+    .carrito-total-value { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 300; color: var(--dark); }
+
+    .btn-generar {
+      width: 100%; background: var(--dark); color: var(--cream); border: none;
+      font-family: 'Jost', sans-serif; font-size: 0.62rem; letter-spacing: 0.35em;
+      text-transform: uppercase; padding: 12px; border-radius: 2px; cursor: pointer;
+      transition: background 0.25s; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-generar:hover { background: var(--accent); }
+
+    .btn-eliminar-carrito {
+      width: 26px; height: 26px; border-radius: 2px; border: 1px solid var(--cream2);
+      background: white; color: var(--warm); font-size: 0.65rem;
+      display: inline-flex; align-items: center; justify-content: center;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .btn-eliminar-carrito:hover { border-color: var(--error); color: var(--error); text-decoration: none; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Delay animaciones grid */
+    .prod-col:nth-child(1) .prod-card { animation-delay: 0.05s; }
+    .prod-col:nth-child(2) .prod-card { animation-delay: 0.1s; }
+    .prod-col:nth-child(3) .prod-card { animation-delay: 0.15s; }
+    .prod-col:nth-child(4) .prod-card { animation-delay: 0.2s; }
+    .prod-col:nth-child(5) .prod-card { animation-delay: 0.25s; }
+    .prod-col:nth-child(6) .prod-card { animation-delay: 0.3s; }
+
+    @media (max-width: 768px) {
+      .navbar-maison { padding: 0 16px; }
+      .page-wrap { padding: 24px 16px; }
+      .carrito-card { position: static; margin-top: 28px; }
+      .navbar-user { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar-maison">
+  <div class="navbar-brand-txt">MAI<em>SON</em></div>
+  <div class="navbar-right">
+    <span class="navbar-user d-none d-md-flex align-items-center">
+      <i class="fa-regular fa-user"></i>
+       <span class="user-name" th:text="${session.usuarioSession?.nomUsua + ' ' + session.usuarioSession?.apeUsua}">Usuario</span>
+    </span>
+    <a href="/tienda/mis-boletas" class="btn-nav">
+      <i class="fa-solid fa-receipt"></i> Mis Boletas
+    </a>
+    <a href="/logout" class="btn-nav">
+      <i class="fa-solid fa-right-from-bracket"></i> Salir
+    </a>
+  </div>
+</nav>
+
+<!-- PAGE -->
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <h1>Nueva <em>Colección</em></h1>
+    <p>Descubre las últimas tendencias · MAISON 2025</p>
+  </div>
+
+  <!-- ALERTAS -->
+  <div th:if="${param.exito}" class="alert-maison alert-success-m">
+    <i class="fa-solid fa-circle-check"></i> Boleta generada correctamente.
+  </div>
+  <div th:if="${param.vacio}" class="alert-maison alert-warning-m">
+    <i class="fa-solid fa-triangle-exclamation"></i> El carrito está vacío.
+  </div>
+  <div th:if="${param.sinstock}" class="alert-maison alert-danger-m">
+    <i class="fa-solid fa-ban"></i> Este producto no tiene stock disponible.
+  </div>
+  <div th:if="${param.excede}" class="alert-maison alert-warning-m">
+    <i class="fa-solid fa-triangle-exclamation"></i> La cantidad supera el stock disponible.
+  </div>
+
+  <div class="row">
+
+    <!-- PRODUCTOS -->
+    <div class="col-lg-8 col-md-7">
+      <div class="row">
+
+        <div th:each="p : ${lstProductos}" class="col-lg-4 col-md-6 col-sm-6 mb-4 prod-col">
+          <div class="prod-card">
+
+            <!-- Imagen -->
+            <div class="prod-img-wrap">
+              <img th:if="${p.imagen != null}"
+                   th:src="@{'/img/productos/' + ${p.imagen}}"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                   th:alt="${p.desProd}">
+              <div class="prod-img-placeholder" style="display:none;">
+                <i class="fa-regular fa-image"></i>
+              </div>
+            </div>
+
+            <!-- Info -->
+            <div class="prod-body">
+              <div class="prod-categoria" th:text="${p.objCategoria?.descripcion}"></div>
+              <div class="prod-nombre" th:text="${p.desProd}"></div>
+              <div class="prod-talla">
+                <i class="fa-regular fa-tag" style="font-size:0.6rem;"></i>
+                <span th:text="${p.talla}"></span>
+                &nbsp;·&nbsp;
+                <span th:text="${p.color}"></span>
+              </div>
+              <div class="prod-precio" th:text="${'S/ ' + #numbers.formatDecimal(p.preProd, 1, 'COMMA', 2, 'POINT')}"></div>
+
+              <!-- Stock -->
+              <div class="prod-stock">
+                <span th:if="${p.stkProd > 10}" class="stock-ok">
+                  <i class="fa-solid fa-circle-check" style="font-size:0.6rem;"></i>
+                  Disponible (<span th:text="${p.stkProd}"></span>)
+                </span>
+                <span th:if="${p.stkProd > 0 and p.stkProd <= 10}" class="stock-low">
+                  <i class="fa-solid fa-triangle-exclamation" style="font-size:0.6rem;"></i>
+                  Últimas unidades (<span th:text="${p.stkProd}"></span>)
+                </span>
+                <span th:if="${p.stkProd == 0}" class="stock-none">
+                  <i class="fa-solid fa-ban" style="font-size:0.6rem;"></i>
+                  Sin stock
+                </span>
+              </div>
+
+              <!-- Formulario agregar -->
+              <div th:if="${p.stkProd > 0}">
+                <form th:action="@{/tienda/agregar}" method="post">
+                  <input type="hidden" name="idProd" th:value="${p.idProd}">
+                  <div class="qty-wrap">
+                    <span class="qty-label">Cant.</span>
+                    <input type="number" name="cantidad" value="1" min="1"
+                           th:max="${p.stkProd}" class="qty-input">
+                  </div>
+                  <button type="submit" class="btn-agregar">
+                    <i class="fa-solid fa-cart-shopping"></i> Agregar
+                  </button>
+                </form>
+              </div>
+
+              <!-- Sin stock -->
+              <div th:if="${p.stkProd == 0}">
+                <button class="btn-sin-stock" disabled>
+                  <i class="fa-solid fa-ban"></i> Sin Stock
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Sin productos -->
+        <div th:if="${lstProductos == null or lstProductos.isEmpty()}" class="col-12">
+          <div style="text-align:center; padding:60px 20px; color:var(--warm);">
+            <i class="fa-regular fa-shirt" style="font-size:2rem; opacity:0.3; display:block; margin-bottom:12px;"></i>
+            <p style="font-size:0.8rem; letter-spacing:0.1em;">No hay productos disponibles en este momento.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CARRITO -->
+    <div class="col-lg-4 col-md-5">
+      <div class="carrito-card">
+        <div class="carrito-header">
+          <div class="carrito-title">
+            <i class="fa-solid fa-cart-shopping"></i> Mi Carrito
+          </div>
+          <!-- Contador items -->
+          <span th:if="${carrito != null and !#lists.isEmpty(carrito)}"
+                style="font-size:0.65rem; color:var(--warm);"
+                th:text="${#lists.size(carrito)} + ' item(s)'"></span>
+        </div>
+
+        <!-- Carrito vacío -->
+        <div th:if="${carrito == null or #lists.isEmpty(carrito)}" class="carrito-empty">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <p>Tu carrito está vacío.<br>Agrega productos para comenzar.</p>
+        </div>
+
+        <!-- Carrito con items -->
+        <div th:if="${carrito != null and !#lists.isEmpty(carrito)}">
+          <table class="carrito-table">
+            <tbody>
+              <tr th:each="det : ${carrito}">
+                <td>
+                  <div class="carrito-prod-name" th:text="${det.objProducto?.desProd}"></div>
+                  <div class="carrito-prod-sub">
+                    x<span th:text="${det.cantidad}"></span>
+                    &nbsp;·&nbsp;
+                    S/ <span th:text="${#numbers.formatDecimal(det.precio, 1, 'COMMA', 2, 'POINT')}"></span> c/u
+                  </div>
+                </td>
+                <td style="text-align:right; white-space:nowrap;">
+                  <span style="font-family:'Cormorant Garamond',serif; font-size:1rem;"
+                        th:text="${'S/ ' + #numbers.formatDecimal(det.cantidad * det.precio, 1, 'COMMA', 2, 'POINT')}"></span>
+                </td>
+                <td style="width:34px;">
+                  <a th:href="@{'/tienda/eliminar-carrito/' + ${det.idProd}}"
+                     class="btn-eliminar-carrito" title="Eliminar">
+                    <i class="fa-solid fa-xmark"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="carrito-footer">
+            <div class="carrito-total">
+              <span class="carrito-total-label">Total</span>
+              <span class="carrito-total-value">
+                S/ <span th:text="${#numbers.formatDecimal(totalCarrito, 1, 'COMMA', 2, 'POINT')}"></span>
+              </span>
+            </div>
+            <form th:action="@{/tienda/confirmar}" method="post">
+              <button type="submit" class="btn-generar btnConfirmar">
+                <i class="fa-solid fa-receipt"></i> Generar Boleta
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+<script>
+  document.querySelectorAll('.btnConfirmar').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const form = this.closest('form');
+      Swal.fire({
+        title: '¿Confirmar compra?',
+        text: 'Se generará la boleta y se descontará el stock.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#b5956a',
+        cancelButtonColor: '#16140f',
+        confirmButtonText: 'Sí, confirmar',
+        cancelButtonText: 'Cancelar'
+      }).then(result => { if (result.isConfirmed) form.submit(); });
+    });
+  });
+</script>
+
+<script th:if="${param.exito}">
+  Swal.fire({ icon: 'success', title: '¡Boleta generada!', text: 'Tu compra fue registrada correctamente.', confirmButtonColor: '#b5956a' });
+</script>
+
+</body>
+</html>

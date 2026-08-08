@@ -1,0 +1,263 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Usuarios - MAISON</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --dark:   #16140f;
+      --cream:  #f5f0e8;
+      --cream2: #ede6d8;
+      --sand:   #c9b89a;
+      --accent: #b5956a;
+      --warm:   #8c7b6b;
+      --error:  #c0392b;
+    }
+    html, body { margin: 0; padding: 0; background: var(--cream); font-family: 'Jost', sans-serif; font-weight: 300; color: var(--dark); }
+    .page-body { padding: 40px 32px; max-width: 1100px; margin: 0 auto; }
+
+    .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 1px solid var(--cream2); }
+    .page-title { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 300; color: var(--dark); line-height: 1.1; }
+    .page-title em { font-style: italic; color: var(--accent); }
+    .page-sub { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--warm); margin-top: 4px; }
+    .header-actions { display: flex; gap: 10px; align-items: center; }
+
+    .btn-primary-custom { background: var(--dark); color: var(--cream); border: none; font-family: 'Jost', sans-serif; font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; padding: 10px 20px; border-radius: 2px; text-decoration: none; transition: background 0.25s, letter-spacing 0.25s; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; cursor: pointer; }
+    .btn-primary-custom:hover { background: var(--accent); color: var(--cream); letter-spacing: 0.45em; text-decoration: none; }
+    .btn-back { background: transparent; color: var(--warm); border: 1px solid var(--cream2); font-family: 'Jost', sans-serif; font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; padding: 10px 20px; border-radius: 2px; text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .btn-back:hover { border-color: var(--warm); color: var(--dark); text-decoration: none; }
+
+    .table-card { background: white; border-radius: 4px; border: 1px solid var(--cream2); overflow: hidden; animation: fadeUp 0.5s ease both; }
+    .table-card-header { padding: 16px 24px; border-bottom: 1px solid var(--cream2); display: flex; align-items: center; justify-content: space-between; }
+    .table-card-header .t-title { font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--warm); display: flex; align-items: center; gap: 8px; }
+    .table-card-header .t-title i { color: var(--accent); }
+
+    .table-maison { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .table-maison thead tr { border-bottom: 1px solid var(--cream2); }
+    .table-maison thead th { padding: 12px 16px; font-size: 0.58rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--warm); font-weight: 400; background: #faf7f2; }
+    .table-maison tbody tr { border-bottom: 1px solid #f2ede4; transition: background 0.15s; }
+    .table-maison tbody tr:last-child { border-bottom: none; }
+    .table-maison tbody tr:hover { background: #fdf9f4; }
+    .table-maison tbody td { padding: 12px 16px; color: var(--dark); vertical-align: middle; font-weight: 300; }
+
+    /* Avatar iniciales */
+    .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--cream2); display: inline-flex; align-items: center; justify-content: center; font-size: 0.72rem; letter-spacing: 0.05em; color: var(--warm); font-weight: 400; flex-shrink: 0; }
+
+    .badge-tipo { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.63rem; letter-spacing: 0.06em; font-weight: 400; }
+    .badge-admin { background: #f0eaf8; color: #6b3fa0; }
+    .badge-user  { background: #e8f4fd; color: #1a6fa0; }
+
+    .badge-estado { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.65rem; letter-spacing: 0.06em; font-weight: 400; }
+    .badge-activo   { background: #edf7f1; color: #2d6a4f; }
+    .badge-inactivo { background: #fef0f0; color: #c0392b; }
+
+    .td-meta { font-size: 0.75rem; color: var(--warm); }
+    .td-meta i { margin-right: 4px; font-size: 0.68rem; opacity: 0.7; }
+
+    .btn-action { width: 30px; height: 30px; border-radius: 3px; border: 1px solid var(--cream2); background: white; color: var(--warm); font-size: 0.72rem; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+    .btn-action:hover { border-color: var(--accent); color: var(--accent); background: rgba(181,149,106,0.06); text-decoration: none; }
+    .btn-action.danger:hover { border-color: #c0392b; color: #c0392b; background: rgba(192,57,43,0.05); }
+    .btn-action.success-btn:hover { border-color: #2d6a4f; color: #2d6a4f; background: rgba(45,106,79,0.05); }
+
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--warm); }
+    .empty-state i { font-size: 2rem; opacity: 0.3; margin-bottom: 16px; display: block; color: var(--sand); }
+    .empty-state p { font-size: 0.8rem; letter-spacing: 0.1em; opacity: 0.7; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 600px) {
+      .page-body { padding: 24px 16px; }
+      .page-header { flex-direction: column; align-items: flex-start; gap: 14px; }
+      .header-actions { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-body">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
+      <div class="page-title">Gestión de <em>Usuarios</em></div>
+      <div class="page-sub">Administración &nbsp;·&nbsp; MAISON</div>
+    </div>
+    <div class="header-actions">
+      <a href="/Usuarios/nuevo" class="btn-primary-custom">
+        <i class="fa-solid fa-plus"></i> Nuevo Usuario
+      </a>
+      <a href="/dashboard" class="btn-back">
+        <i class="fa-solid fa-arrow-left"></i> Volver
+      </a>
+    </div>
+  </div>
+
+  <!-- TABLE CARD -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <div class="t-title">
+        <i class="fa-solid fa-users"></i> Usuarios Registrados
+      </div>
+      <span style="font-size:0.65rem; color:var(--warm); letter-spacing:0.1em;"
+            th:text="${lstUsuarios != null ? lstUsuarios.size() + ' registros' : '0 registros'}"></span>
+    </div>
+
+    <!-- CON DATOS -->
+    <div th:if="${lstUsuarios != null and !lstUsuarios.isEmpty()}" class="table-responsive">
+      <table class="table-maison">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Usuario</th>
+            <th>DNI</th>
+            <th>Contacto</th>
+            <th>F.Registro</th>
+            <th>Tipo</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="u : ${lstUsuarios}">
+
+            <!-- ID -->
+            <td style="color:var(--warm); font-size:0.78rem;" th:text="${u.codUsua}"></td>
+
+            <!-- Usuario: avatar + nombre + email -->
+            <td>
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div class="avatar"
+                     th:text="${#strings.substring(u.nomUsua,0,1) + #strings.substring(u.apeUsua,0,1)}">
+                </div>
+                <div>
+                  <div style="font-weight:400;"
+                       th:text="${u.nomUsua + ' ' + u.apeUsua}"></div>
+                  <div class="td-meta" th:if="${u.email != null and !u.email.isEmpty()}">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span th:text="${u.email}"></span>
+                  </div>
+                </div>
+              </div>
+            </td>
+
+            <!-- DNI -->
+            <td style="font-family:'Cormorant Garamond',serif; font-size:1rem; letter-spacing:0.05em;"
+                th:text="${u.dni != null ? u.dni : '—'}"></td>
+
+            <!-- Contacto: teléfono -->
+            <td>
+              <span class="td-meta" th:if="${u.telefono != null and !u.telefono.isEmpty()}">
+                <i class="fa-solid fa-phone"></i>
+                <span th:text="${u.telefono}"></span>
+              </span>
+              <span th:if="${u.telefono == null or u.telefono.isEmpty()}"
+                    style="color:#ccc; font-size:0.75rem;">—</span>
+            </td>
+
+            <!-- Fecha nacimiento -->
+            <td class="td-meta"
+                th:text="${u.fnaUsua != null ? #temporals.format(u.fnaUsua,'dd/MM/yyyy') : '—'}"></td>
+
+            <!-- Tipo -->
+            <td>
+              <span th:if="${u.idTipo == 1}" class="badge-tipo badge-admin">Admin</span>
+              <span th:if="${u.idTipo != 1}" class="badge-tipo badge-user">Usuario</span>
+            </td>
+
+            <!-- Estado -->
+            <td>
+              <span th:if="${u.estUsua == 1}" class="badge-estado badge-activo">Activo</span>
+              <span th:if="${u.estUsua != 1}" class="badge-estado badge-inactivo">Inactivo</span>
+            </td>
+
+            <!-- Acciones -->
+            <td>
+              <div style="display:flex; gap:6px;">
+                <a th:href="@{'/Usuarios/editar/' + ${u.codUsua}}"
+                   class="btn-action" title="Editar">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+                <a th:if="${u.estUsua == 1}"
+                   th:href="@{'/Usuarios/desactivar/' + ${u.codUsua}}"
+                   class="btn-action danger btnDesactivar" title="Desactivar">
+                  <i class="fa-solid fa-ban"></i>
+                </a>
+                <a th:if="${u.estUsua != 1}"
+                   th:href="@{'/Usuarios/activar/' + ${u.codUsua}}"
+                   class="btn-action success-btn btnActivar" title="Activar">
+                  <i class="fa-solid fa-check"></i>
+                </a>
+              </div>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SIN DATOS -->
+    <div th:if="${lstUsuarios == null or lstUsuarios.isEmpty()}" class="empty-state">
+      <i class="fa-regular fa-user"></i>
+      <p>Aún no hay usuarios registrados.<br>Comienza agregando el primer usuario.</p>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+<script>
+  document.querySelectorAll('.btnDesactivar').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const url = this.href;
+      Swal.fire({
+        title: '¿Desactivar usuario?',
+        text: 'El usuario no podrá iniciar sesión.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#b5956a',
+        cancelButtonColor: '#16140f',
+        confirmButtonText: 'Sí, desactivar',
+        cancelButtonText: 'Cancelar'
+      }).then(result => { if (result.isConfirmed) window.location.href = url; });
+    });
+  });
+
+  document.querySelectorAll('.btnActivar').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const url = this.href;
+      Swal.fire({
+        title: '¿Activar usuario?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#2d6a4f',
+        cancelButtonColor: '#16140f',
+        confirmButtonText: 'Sí, activar',
+        cancelButtonText: 'Cancelar'
+      }).then(result => { if (result.isConfirmed) window.location.href = url; });
+    });
+  });
+</script>
+
+<script th:if="${param.exito}">
+  Swal.fire({ icon: 'success', title: '¡Usuario guardado!', text: 'El usuario se registró correctamente.', confirmButtonColor: '#b5956a' });
+</script>
+<script th:if="${param.actualizado}">
+  Swal.fire({ icon: 'success', title: '¡Usuario actualizado!', confirmButtonColor: '#b5956a' });
+</script>
+<script th:if="${param.activado}">
+  Swal.fire({ icon: 'success', title: '¡Usuario activado!', confirmButtonColor: '#2d6a4f' });
+</script>
+<script th:if="${param.desactivado}">
+  Swal.fire({ icon: 'warning', title: 'Usuario desactivado', confirmButtonColor: '#b5956a' });
+</script>
+</body>
+</html>

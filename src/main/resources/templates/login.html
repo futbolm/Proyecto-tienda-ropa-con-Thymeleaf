@@ -1,0 +1,373 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - MAISON</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f7f3ee;
+      --dark: #1a1714;
+      --sand: #c9b89a;
+      --warm-mid: #8c7b6b;
+      --accent: #b5956a;
+      --error: #c0392b;
+      --success: #2d6a4f;
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      overflow: hidden;
+    }
+
+    /* LEFT PANEL — visual/brand side */
+    .brand-panel {
+      background: var(--dark);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 20% 80%, rgba(181,149,106,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 50% at 80% 10%, rgba(201,184,154,0.1) 0%, transparent 60%);
+    }
+
+    .brand-panel .top-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      color: var(--sand);
+      text-transform: uppercase;
+      opacity: 0.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-center {
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-center .eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .brand-center .eyebrow::after {
+      content: '';
+      height: 1px;
+      width: 40px;
+      background: var(--accent);
+      opacity: 0.6;
+    }
+
+    .brand-center h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3.5rem, 6vw, 5.5rem);
+      color: var(--cream);
+      line-height: 0.9;
+      letter-spacing: 0.05em;
+    }
+
+    .brand-center h1 em {
+      font-style: italic;
+      color: var(--sand);
+    }
+
+    .brand-center p {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: var(--warm-mid);
+      font-weight: 300;
+      max-width: 280px;
+      line-height: 1.8;
+    }
+
+    /* Decorative ring */
+    .ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(201,184,154,0.12);
+    }
+    .ring-1 { width: 320px; height: 320px; bottom: -80px; right: -80px; }
+    .ring-2 { width: 220px; height: 220px; bottom: -30px; right: -30px; border-color: rgba(181,149,106,0.2); }
+    .ring-3 { width: 120px; height: 120px; bottom: 20px; right: 20px; border-color: rgba(181,149,106,0.35); }
+
+    .brand-bottom {
+      position: relative;
+      z-index: 1;
+    }
+
+    .collection-tag {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--warm-mid);
+    }
+
+    /* RIGHT PANEL — login form */
+    .form-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 4.5rem;
+      background: var(--cream);
+      position: relative;
+    }
+
+    .form-panel::after {
+      content: '';
+      position: absolute;
+      left: 0; top: 15%; bottom: 15%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--sand) 30%, var(--sand) 70%, transparent);
+      opacity: 0.4;
+    }
+
+    .form-header {
+      margin-bottom: 3rem;
+    }
+
+    .form-header .welcome {
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .form-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 2.4rem;
+      color: var(--dark);
+      line-height: 1.15;
+    }
+
+    .form-header h2 em {
+      font-style: italic;
+    }
+
+    /* Alerts */
+    .alert {
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+    .alert-error {
+      background: rgba(192,57,43,0.08);
+      border-left: 2px solid var(--error);
+      color: var(--error);
+    }
+    .alert-success {
+      background: rgba(45,106,79,0.08);
+      border-left: 2px solid var(--success);
+      color: var(--success);
+    }
+
+    /* Form */
+    .field {
+      margin-bottom: 1.6rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--warm-mid);
+      margin-bottom: 0.5rem;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap i {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--sand);
+      font-size: 0.75rem;
+    }
+
+    .field input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #d9cfc4;
+      padding: 0.6rem 0 0.6rem 1.4rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--dark);
+      outline: none;
+      transition: border-color 0.3s;
+      letter-spacing: 0.04em;
+    }
+
+    .field input::placeholder {
+      color: #c5bab0;
+      font-weight: 200;
+    }
+
+    .field input:focus {
+      border-bottom-color: var(--accent);
+    }
+
+    .field input:focus + .line-indicator {
+      transform: scaleX(1);
+    }
+
+    .submit-btn {
+      margin-top: 2.5rem;
+      width: 100%;
+      padding: 1rem;
+      background: var(--dark);
+      color: var(--cream);
+      border: none;
+      cursor: pointer;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 300;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      transition: background 0.3s, letter-spacing 0.3s;
+    }
+
+    .submit-btn:hover {
+      background: var(--accent);
+      letter-spacing: 0.6em;
+    }
+
+    .form-footer {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-footer a {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--warm-mid);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .form-footer a:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* Fade-in animation */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-header  { animation: fadeUp 0.7s ease both; }
+    .field:nth-child(1) { animation: fadeUp 0.7s 0.1s ease both; }
+    .field:nth-child(2) { animation: fadeUp 0.7s 0.2s ease both; }
+    .submit-btn   { animation: fadeUp 0.7s 0.3s ease both; }
+    .form-footer  { animation: fadeUp 0.7s 0.4s ease both; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body { grid-template-columns: 1fr; }
+      .brand-panel { display: none; }
+      .form-panel { padding: 3rem 2rem; }
+      .form-panel::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LEFT: Brand Panel -->
+  <div class="brand-panel">
+    <span class="top-tag">Temporada 2025</span>
+
+    <div class="brand-center">
+      <div class="eyebrow">Nueva Colección</div>
+      <h1>MAI<br><em>SON</em></h1>
+      <p>Moda atemporal para quienes aprecian el detalle. Cada prenda, una historia.</p>
+    </div>
+
+    <div class="brand-bottom">
+      <span class="collection-tag">Tienda de Ropa &nbsp;·&nbsp; Est. 2018</span>
+    </div>
+
+
+    <div class="ring ring-1"></div>
+    <div class="ring ring-2"></div>
+    <div class="ring ring-3"></div>
+  </div>
+
+  <!-- RIGHT: Form Panel -->
+  <div class="form-panel">
+    <div class="form-header">
+      <p class="welcome">Bienvenido de vuelta</p>
+      <h2>Accede a tu<br><em>cuenta</em></h2>
+    </div>
+
+    <!-- Thymeleaf alerts -->
+    <div th:if="${mensaje}" class="alert alert-error" th:text="${mensaje}"></div>
+    <div th:if="${mensajeSalida}" class="alert alert-success" th:text="${mensajeSalida}"></div>
+
+    <form action="/login" method="post">
+      <div class="field">
+        <label>Usuario</label>
+        <div class="input-wrap">
+          <i class="fa-regular fa-user"></i>
+          <input type="text" name="username" placeholder="Tu nombre de usuario" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Contraseña</label>
+        <div class="input-wrap">
+          <i class="fa-regular fa-lock"></i>
+          <input type="password" name="password" placeholder="••••••••" required>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        Ingresar &nbsp;&rarr;
+      </button>
+    </form>
+
+    <div class="form-footer">
+      <a href="#">¿Olvidaste tu contraseña?</a>
+      <a href="#">Crear cuenta</a>
+    </div>
+  </div>
+
+</body>
+</html>
