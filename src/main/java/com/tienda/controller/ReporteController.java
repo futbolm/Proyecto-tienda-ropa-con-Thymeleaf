@@ -33,6 +33,9 @@ public class ReporteController {
 	
 	@GetMapping("/boletas/imprimir/{numBol}")
 	public ResponseEntity<byte[]> imprimirBoleta(@PathVariable int numBol) throws Exception{
+		//esto agregamos
+		System.setProperty("java.awt.headless", "true");
+		
 		CabBoleta boleta = boletaService.buscarPorId(numBol); 
 		List<DetBoleta> detalle = boleta.getDetalle(); 
 		

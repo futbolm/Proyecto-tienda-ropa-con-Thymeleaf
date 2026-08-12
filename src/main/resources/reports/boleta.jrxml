@@ -21,7 +21,7 @@
             <staticText>
                 <reportElement x="0" y="0" width="260" height="28"/>
                 <textElement textAlignment="Center">
-                    <font size="18" isBold="true" fontName="Serif"/>
+                    <font size="18" isBold="true" fontName="SansSerif"/>
                 </textElement>
                 <text><![CDATA[MAISON]]></text>
             </staticText>
@@ -29,7 +29,7 @@
             <staticText>
                 <reportElement x="0" y="28" width="260" height="12"/>
                 <textElement textAlignment="Center">
-                    <font size="7" isItalic="true"/>
+                    <font size="7" isItalic="true" fontName="SansSerif"/>
                 </textElement>
                 <text><![CDATA[Moda & Estilo — Nueva Colección 2025]]></text>
             </staticText>
@@ -37,14 +37,14 @@
             <staticText>
                 <reportElement x="0" y="40" width="260" height="12"/>
                 <textElement textAlignment="Center">
-                    <font size="7"/>
+                    <font size="7" fontName="SansSerif"/>
                 </textElement>
                 <text><![CDATA[RUC: 20987654321  |  Av. Moda 456, Lima, Perú]]></text>
             </staticText>
 
             <staticText>
                 <reportElement x="0" y="56" width="260" height="10"/>
-                <textElement textAlignment="Center"><font size="8"/></textElement>
+                <textElement textAlignment="Center"><font size="8" fontName="SansSerif"/></textElement>
                 <text><![CDATA[- - - - - - - - - - - - - - - - - - - - - - -]]></text>
             </staticText>
 
@@ -52,64 +52,64 @@
 			    <reportElement x="0" y="66" width="260" height="20" 
 			                   backcolor="#16140f" forecolor="#F5F0E8" mode="Opaque"/>
 			    <textElement textAlignment="Center" verticalAlignment="Middle">
-			        <font size="10" isBold="true"/>
+			        <font size="10" isBold="true" fontName="SansSerif"/>
 			    </textElement>
 			    <text><![CDATA[BOLETA DE VENTA]]></text>
 			</staticText>
 
             <textField>
                 <reportElement x="0" y="91" width="260" height="14"/>
-                <textElement><font size="8"/></textElement>
+                <textElement><font size="8" fontName="SansSerif"/></textElement>
                 <textFieldExpression><![CDATA["N° Operación : " + $P{numBoleta}]]></textFieldExpression>
             </textField>
 
             <textField>
                 <reportElement x="0" y="105" width="260" height="14"/>
-                <textElement><font size="8"/></textElement>
+                <textElement><font size="8" fontName="SansSerif"/></textElement>
                 <textFieldExpression><![CDATA["Fecha Emisión : " + $P{fechaBoleta}]]></textFieldExpression>
             </textField>
 
             <staticText>
                 <reportElement x="0" y="124" width="260" height="12"/>
-                <textElement><font size="8" isBold="true"/></textElement>
+                <textElement><font size="8" isBold="true" fontName="SansSerif"/></textElement>
                 <text><![CDATA[CLIENTE:]]></text>
             </staticText>
 
             <textField>
                 <reportElement x="0" y="136" width="260" height="15"/>
-                <textElement><font size="9" isBold="true"/></textElement>
+                <textElement><font size="9" isBold="true" fontName="SansSerif"/></textElement>
                 <textFieldExpression><![CDATA[$P{nombreCliente}]]></textFieldExpression>
             </textField>
 
             <staticText>
                 <reportElement x="0" y="155" width="260" height="10"/>
-                <textElement textAlignment="Center"><font size="8"/></textElement>
+                <textElement textAlignment="Center"><font size="8" fontName="SansSerif"/></textElement>
                 <text><![CDATA[- - - - - - - - - - - - - - - - - - - - - - -]]></text>
             </staticText>
 
             <staticText>
                 <reportElement x="0" y="167" width="260" height="12"/>
-                <textElement textAlignment="Center"><font size="8" isBold="true"/></textElement>
+                <textElement textAlignment="Center"><font size="8" isBold="true" fontName="SansSerif"/></textElement>
                 <text><![CDATA[TOTAL PAGADO]]></text>
             </staticText>
 
             <textField>
                 <reportElement x="0" y="179" width="260" height="24"/>
                 <textElement textAlignment="Center">
-                    <font size="18" isBold="true"/>
+                    <font size="18" isBold="true" fontName="SansSerif"/>
                 </textElement>
                 <textFieldExpression><![CDATA["S/ " + String.format("%.2f", $P{totalBoleta})]]></textFieldExpression>
             </textField>
 
             <staticText>
                 <reportElement x="0" y="207" width="260" height="10"/>
-                <textElement textAlignment="Center"><font size="8"/></textElement>
+                <textElement textAlignment="Center"><font size="8" fontName="SansSerif"/></textElement>
                 <text><![CDATA[- - - - - - - - - - - - - - - - - - - - - - -]]></text>
             </staticText>
 
             <staticText>
                 <reportElement x="0" y="217" width="130" height="12"/>
-                <textElement><font size="8" isBold="true"/></textElement>
+                <textElement><font size="8" isBold="true" fontName="SansSerif"/></textElement>
                 <text><![CDATA[DETALLE DE COMPRA]]></text>
             </staticText>
 
@@ -120,22 +120,22 @@
         <band height="16">
             <staticText>
                 <reportElement x="0"   y="0" width="140" height="14" backcolor="#C9B89A" mode="Opaque"/>
-                <textElement verticalAlignment="Middle"><font size="7" isBold="true"/></textElement>
+                <textElement verticalAlignment="Middle"><font size="7" isBold="true" fontName="SansSerif"/></textElement>
                 <text><![CDATA[  Producto]]></text>
             </staticText>
             <staticText>
                 <reportElement x="140" y="0" width="35"  height="14" backcolor="#C9B89A" mode="Opaque"/>
-                <textElement textAlignment="Center" verticalAlignment="Middle"><font size="7" isBold="true"/></textElement>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font size="7" isBold="true" fontName="SansSerif"/></textElement>
                 <text><![CDATA[Cant.]]></text>
             </staticText>
             <staticText>
                 <reportElement x="175" y="0" width="40"  height="14" backcolor="#C9B89A" mode="Opaque"/>
-                <textElement textAlignment="Right" verticalAlignment="Middle"><font size="7" isBold="true"/></textElement>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font size="7" isBold="true" fontName="SansSerif"/></textElement>
                 <text><![CDATA[P.Unit  ]]></text>
             </staticText>
             <staticText>
                 <reportElement x="215" y="0" width="45"  height="14" backcolor="#C9B89A" mode="Opaque"/>
-                <textElement textAlignment="Right" verticalAlignment="Middle"><font size="7" isBold="true"/></textElement>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font size="7" isBold="true" fontName="SansSerif"/></textElement>
                 <text><![CDATA[Subtotal  ]]></text>
             </staticText>
         </band>
@@ -145,22 +145,22 @@
         <band height="20">
             <textField isStretchWithOverflow="true">
                 <reportElement x="0"   y="2" width="140" height="14"/>
-                <textElement verticalAlignment="Middle"><font size="7"/></textElement>
+                <textElement verticalAlignment="Middle"><font size="7" fontName="SansSerif"/></textElement>
                 <textFieldExpression><![CDATA[$F{desProd}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="140" y="2" width="35"  height="14"/>
-                <textElement textAlignment="Center" verticalAlignment="Middle"><font size="7"/></textElement>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font size="7" fontName="SansSerif"/></textElement>
                 <textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="175" y="2" width="40"  height="14"/>
-                <textElement textAlignment="Right" verticalAlignment="Middle"><font size="7"/></textElement>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font size="7" fontName="SansSerif"/></textElement>
                 <textFieldExpression><![CDATA["S/ " + String.format("%.2f", $F{precio})]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="215" y="2" width="45"  height="14"/>
-                <textElement textAlignment="Right" verticalAlignment="Middle"><font size="7"/></textElement>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font size="7" fontName="SansSerif"/></textElement>
                 <textFieldExpression><![CDATA["S/ " + String.format("%.2f", $F{cantidad} * $F{precio})]]></textFieldExpression>
             </textField>
         </band>
@@ -171,43 +171,43 @@
 
             <staticText>
                 <reportElement x="0" y="0" width="260" height="10"/>
-                <textElement textAlignment="Center"><font size="8"/></textElement>
+                <textElement textAlignment="Center"><font size="8" fontName="SansSerif"/></textElement>
                 <text><![CDATA[- - - - - - - - - - - - - - - - - - - - - - -]]></text>
             </staticText>
 
             <staticText>
                 <reportElement x="0" y="10" width="180" height="16"/>
-                <textElement verticalAlignment="Middle"><font size="9" isBold="true"/></textElement>
+                <textElement verticalAlignment="Middle"><font size="9" isBold="true" fontName="SansSerif"/></textElement>
                 <text><![CDATA[TOTAL:]]></text>
             </staticText>
 
             <textField>
                 <reportElement x="180" y="10" width="80" height="16"/>
-                <textElement textAlignment="Right" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font size="9" isBold="true" fontName="SansSerif"/></textElement>
                 <textFieldExpression><![CDATA["S/ " + String.format("%.2f", $P{totalBoleta})]]></textFieldExpression>
             </textField>
 
             <staticText>
                 <reportElement x="0" y="32" width="260" height="10"/>
-                <textElement textAlignment="Center"><font size="8"/></textElement>
+                <textElement textAlignment="Center"><font size="8" fontName="SansSerif"/></textElement>
                 <text><![CDATA[- - - - - - - - - - - - - - - - - - - - - - -]]></text>
             </staticText>
 
             <staticText>
                 <reportElement x="0" y="44" width="260" height="16"/>
-                <textElement textAlignment="Center"><font size="9" isBold="true"/></textElement>
+                <textElement textAlignment="Center"><font size="9" isBold="true" fontName="SansSerif"/></textElement>
                 <text><![CDATA[¡GRACIAS POR TU COMPRA!]]></text>
             </staticText>
 
             <staticText>
                 <reportElement x="0" y="60" width="260" height="12"/>
-                <textElement textAlignment="Center"><font size="7" isItalic="true"/></textElement>
+                <textElement textAlignment="Center"><font size="7" isItalic="true" fontName="SansSerif"/></textElement>
                 <text><![CDATA[Conserva este recibo como comprobante de pago]]></text>
             </staticText>
 
             <staticText>
                 <reportElement x="0" y="74" width="260" height="12"/>
-                <textElement textAlignment="Center"><font size="7"/></textElement>
+                <textElement textAlignment="Center"><font size="7" fontName="SansSerif"/></textElement>
                 <text><![CDATA[www.maison.pe  |  contacto@maison.pe]]></text>
             </staticText>
 
