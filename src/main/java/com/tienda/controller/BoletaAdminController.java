@@ -44,10 +44,24 @@ public class BoletaAdminController {
 			}
 		}
 		
-		model.addAttribute("boletasPorCliente", boletasPorCliente); 
+		
+		
+		
+		/*model.addAttribute("boletasPorCliente", boletasPorCliente); 
 		model.addAttribute("totalesPorCliente", totalesPorCliente); 
 		model.addAttribute("totalBoletas", todas.size());
-		return "crudBoletas"; 
+		return "crudBoletas"; */
+		// ✅ NUEVO
+	    double totalRecaudado = totalesPorCliente.values()
+	            .stream()
+	            .mapToDouble(Double::doubleValue)
+	            .sum();
+	    
+	    model.addAttribute("boletasPorCliente", boletasPorCliente); 
+	    model.addAttribute("totalesPorCliente", totalesPorCliente); 
+	    model.addAttribute("totalBoletas", todas.size());
+	    model.addAttribute("totalRecaudado", totalRecaudado); // ✅ NUEVO
+	    return "crudBoletas";
 	}
 	
 	@GetMapping("/cliente/{codUsua}") 

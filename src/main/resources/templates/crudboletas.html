@@ -88,6 +88,7 @@
       <div class="stat-value accent"
            th:text="${totalBoletas}">0</div>
     </div>
+	<!--    
     <div class="stat-card">
       <div class="stat-label">Recaudado Total</div>
       <div class="stat-value accent">
@@ -96,6 +97,13 @@
           1, 'COMMA', 2, 'POINT')}">0.00</span>
       </div>
     </div>
+	-->
+	<div class="stat-card">
+	  <div class="stat-label">Recaudado Total</div>
+	  <div class="stat-value accent">
+	    S/ <span th:text="${#numbers.formatDecimal(totalRecaudado, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+	  </div>
+	</div>
   </div>
 
   <div class="table-card">
