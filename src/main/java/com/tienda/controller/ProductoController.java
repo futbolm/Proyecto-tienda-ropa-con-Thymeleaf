@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,7 +41,9 @@ public class ProductoController {
 	@Autowired
 	private ProveedorService proveedorService; 
 	
-	private final String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads/productos/"; 
+	// ✅ Ruta dinámica: en local usa carpeta del proyecto, en Railway usa el Volume
+	@Value("${app.upload.dir}")
+	private String UPLOAD_DIR;
 	
 	private void cargarLista(Model model) {
 		
@@ -58,6 +61,18 @@ public class ProductoController {
 		model.addAttribute("lstProveedores", proveedoresActivos); 
 		model.addAttribute("lstProductos", productoService.listarTodos()); 
 		
+	}
+	
+	// ✅ Crea el directorio de uploads si no existe (necesario en Railway con Volume vacío)
+	private void asegurarDirectorio() {
+		try {
+			Path directorio = Paths.get(UPLOAD_DIR);
+			if (!Files.exists(directorio)) {
+				Files.createDirectories(directorio);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@GetMapping("/cargar")
@@ -86,6 +101,7 @@ public class ProductoController {
 		
 		if(!archivo.isEmpty()) {
 			try {
+				asegurarDirectorio(); 
 				String nombreArchivo = producto.getIdProd() + "_" + archivo.getOriginalFilename(); 
 				 Path ruta = Paths.get(UPLOAD_DIR + nombreArchivo); 
 				 Files.write(ruta, archivo.getBytes()); 
@@ -128,6 +144,7 @@ public class ProductoController {
 		
 		if(!archivo.isEmpty()) {
 			try {
+				asegurarDirectorio(); 
 				String nombreArchivo = producto.getIdProd() + "_" + archivo.getOriginalFilename(); 
 				Path ruta = Paths.get(UPLOAD_DIR + nombreArchivo); 
 				Files.write(ruta,archivo.getBytes());
